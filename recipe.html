@@ -1,0 +1,472 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECIPE FINDER</title>
+    
+    <style>
+        h1 {
+            text-align: center;
+            color:aqua;
+        }
+
+        body {
+            background-image: url("https://img.freepik.com/premium-photo/pasta-spaghetti-with-ingredients-cooking-pasta_80090-1957.jpg");
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+            #ingredient-checkboxes {
+            display: none;
+            font-weight: bold;
+            color:aqua;
+            margin: 0 20px 0;
+        }
+
+        .recipe {
+            border: 1px solid red;
+            background-color: peachpuff;
+            padding: 10px;
+            color:black;
+            margin: 10px 0;
+        }
+
+        .center-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 15%;
+        }
+
+        .recipe img {
+            max-width: 100px;
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+        #login-form, #register-form {
+            width: 300px;
+            padding: 20px;
+            background-color: aqua; 
+            text-align: center;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="password"], button {
+            width: calc(100% - 40px); 
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center; 
+        }
+        button {
+            width: 100%; 
+            max-width: 200px; 
+            padding: 20px;
+            border: none;
+            background-color: white;
+            color: #333;
+        }
+        .button-spacing {
+            margin-right: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><b>WORLD OF RECIPES</b></h1>
+        <img src="https://i.pinimg.com/564x/b3/8a/dc/b38adc616ff8f4f6848326c76673f6ab.jpg" class="center-image">
+
+        <div id="auth-container">
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login button"><b>Login</b></button>
+                <p>Don't have an account? <a href="#" id="show register">Register here</a></p>
+            </div>
+            <div id="register-form" class="hidden">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button id="register button">Register</button>
+                <p>Already have an account? <a href="#" id="show login">Login here</a></p>
+            </div>
+        </div>
+
+        <div id="ingredient-list" class="hidden">
+            <div id="ingredient-checkboxes">
+
+                <div>
+                    <input type="checkbox" id="Egg" value="Egg">
+                    <label for="Egg">Egg</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Cheese" value="Cheese">
+                    <label for="Cheese">Cheese</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Bread" value="Bread">
+                    <label for="Bread">Bread</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Tomato" value="Tomato">
+                    <label for="Tomato">Tomato</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Onion" value="Onion">
+                    <label for="Onion">Onion</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Ketchup" value="Ketchup">
+                    <label for="Ketchup">Ketchup</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Chicken" value="Chicken">
+                    <label for="Chicken">Chicken</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Bell-pepper" value="Bell pepper">
+                    <label for="Bell-pepper">Bell pepper</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Potato" value="Potato">
+                    <label for="Potato">Potato</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="Mayonnaise" value="Mayonnaise">
+                    <label for="Mayonnaise">Mayonnaise</label>
+                </div>
+            </div>
+            <div id="button-container">
+                <button id="select-ingredients">Select Ingredients</button>
+                <button id="saved-ones">Saved Ones</button>
+            </div>
+        </div>
+
+        <div id="recipe-list">
+            <div id="recipes"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        const recipes = [
+            {
+                name: 'Cheese Omelette',
+                ingredients: ['Egg', 'Cheese'],
+                image: 'https://assets.epicurious.com/photos/54cad8d21f13bb9b2edf9930/master/pass/51262180_cheese-omelette_3x3jpg',
+                instructions: 'Beat the eggs and cheese together. Add pepper and salt. Pour into a heated pan. Cook until done. Serve with Ketchup.'
+            },
+            {
+                name: 'Chicken Sandwich',
+                ingredients: ['Bread', 'Chicken', 'Mayonnaise', 'Bell pepper', 'Ketchup', 'Onion'],
+                image: 'https://theyummydelights.com/wp-content/uploads/2022/04/shredded-chicken-sandwich.jpg',
+                instructions: 'Fry the chicken with oil for a few minutes. Mix chicken with mayonnaise and othe spices. Spread on bread with bell pepper, ketchup, and onion.Then heat the bread'
+            },
+            {
+                name: 'Vegetable Sandwich',
+                ingredients: ['Tomato', 'Onion', 'Cheese', 'Bell pepper', 'Bread'],
+                image: 'https://www.jeyashriskitchen.com/wp-content/uploads/2013/12/vegetable-sandwich.jpg',
+                instructions: ' Cut tomato, onion, and bell pepper into smaller pieces. Layer tomato, onion, cheese, and bell pepper on bread. Heat the bread.'
+            },
+            {
+                name: 'Salad',
+                ingredients: ['Cheese', 'Tomato', 'Onion', 'Bell pepper'],
+                image: 'https://static.diabetesfoodhub.org/system/thumbs/system/images/recipes/may_sweet_pepper_onion-_tomato_279x200_1_2249721274.jpg',
+                instructions: ' Cut tomato into circle shapes, cut onions and bell pepper into small pieces. Mix it with cheese, salt and chat masala. Serve chilled.'
+            },
+            {
+                name: 'French Fries',
+                ingredients: ['Potato'],
+                image: 'https://img.taste.com.au/2z0hUTnc/w1200-h630-cfill/taste/2016/11/rachel-87711-2.jpeg',
+                instructions: ' Peel the potatoes. Cut them into stick shapes. Rinse with water. Dry them. Fry the potatoes in oil. Season with salt and serve.'
+            },
+            {
+                name: 'Egg Sandwich',
+                ingredients: ['Egg', 'Bread', 'Cheese', 'Ketchup'],
+                image: 'https://static.toiimg.com/thumb/60018142.cms?width=1200&height=900',
+                instructions: 'Beat the eggs and add some salt and pepper.Pour on a heated pan and cook until done.Heat the bread.Layer the bread with the egg, cheese and spread ketchup on the egg.'
+            },
+            {
+                name: 'Boiled Egg',
+                ingredients: ['Egg'],
+                image: 'https://themodernnonna.com/wp-content/uploads/2022/11/Boiling-and-Peeling-Eggs-Perfectly-scaled.jpg',
+                instructions: 'put the eggs in a pot with water and boil it for 10 minutes. Then take the eggs and leave it aside. Peel the shells and cut it in half. Add salt and pepper before serving.'
+            }
+
+        ];
+
+        // Storing recipes in localStorage
+        localStorage.setItem('recipes', JSON.stringify(recipes));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ingredientsContainer = document.getElementById('ingredient-checkboxes');
+            const buttonContainer = document.getElementById('button-container');
+            const selectButton = document.getElementById('select-ingredients');
+            const savedonesButton = document.getElementById('saved-ones');
+            const submitButton = document.createElement('button');
+            submitButton.id = 'Find Recipes';
+            submitButton.textContent = 'Find Recipes';
+
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const authContainer = document.getElementById('auth-container');
+
+            selectButton.addEventListener('click', () => {
+                ingredientsContainer.style.display = 'block';
+                buttonContainer.removeChild(selectButton); // Remove select button
+                buttonContainer.appendChild(submitButton); // Add submit button
+            });
+
+            submitButton.addEventListener('click', () => {
+                const selectedIngredients = [];
+                const checkboxes = ingredientsContainer.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedIngredients.push(checkbox.value);
+                    }
+                });
+
+                updateRecipeList(selectedIngredients);
+            });
+
+            savedonesButton.addEventListener('click', () => {
+                showSavedRecipes();
+            });
+
+            function updateRecipeList(selectedIngredients) {
+                const recipesContainer = document.getElementById('recipes');
+                recipesContainer.innerHTML = '';
+
+                // Retrieving recipes from local storage
+                const storedRecipes = JSON.parse(localStorage.getItem('recipes'));
+                const favoriteRecipes = JSON.parse(localStorage.getItem('favorites')) || [];
+                const reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+
+                if (storedRecipes) {
+                    const matchedRecipes = storedRecipes.filter(recipe =>
+                        recipe.ingredients.every(ingredient => selectedIngredients.includes(ingredient))
+                    );
+
+                    if (matchedRecipes.length > 0) {
+                        matchedRecipes.forEach(recipe => {
+                            const recipeDiv = document.createElement('div');
+                            recipeDiv.classList.add('recipe');
+
+                            const recipeName = document.createElement('h3');
+                            recipeName.textContent = recipe.name;
+                            recipeDiv.appendChild(recipeName);
+
+                            const recipeImage = document.createElement('img');
+                            recipeImage.src = recipe.image;
+                            recipeDiv.appendChild(recipeImage);
+
+                            const recipeIngredients = document.createElement('p');
+                            recipeIngredients.textContent = 'Ingredients: ' + recipe.ingredients.join(', ');
+                            recipeDiv.appendChild(recipeIngredients);
+
+                            const recipeInstructions = document.createElement('p');
+                            recipeInstructions.textContent = 'Instructions: ' + recipe.instructions;
+                            recipeDiv.appendChild(recipeInstructions);
+
+                            // Adding Save as Favorite button
+                            const favoriteButton = document.createElement('button');
+                            favoriteButton.textContent = favoriteRecipes.includes(recipe.name) ? 'Unfavorite' : 'Save as Favorite';
+                            favoriteButton.classList.add('button-spacing');
+                            favoriteButton.addEventListener('click', () => {
+                                FavRecipe(recipe.name);
+                                favoriteButton.textContent = favoriteRecipes.includes(recipe.name) ? 'Unfavorite' : 'Save as Favorite';
+                            });
+                            recipeDiv.appendChild(favoriteButton);
+
+                            //  Speaking Instructions button
+                            const speakbutton = document.createElement('button');
+                            speakbutton.textContent = 'Speak Instructions';
+                            speakbutton.addEventListener('click', () => {
+                                speakInstructions(recipe.instructions);
+                            });
+                            recipeDiv.appendChild(speakbutton);
+
+                            // Adding review 
+                            const reviewSection = document.createElement('div');
+                            const reviewTitle = document.createElement('h4');
+                            reviewTitle.textContent = 'Reviews:';
+                            reviewSection.appendChild(reviewTitle);
+
+                            const reviewList = document.createElement('ul');
+                            if (reviews[recipe.name]) {
+                                reviews[recipe.name].forEach(review => {
+                                    const reviewItem = document.createElement('li');
+                                    reviewItem.textContent = review;
+                                    reviewList.appendChild(reviewItem);
+                                });
+                            }
+                            reviewSection.appendChild(reviewList);
+
+                            const reviewInput = document.createElement('input');
+                            reviewInput.type = 'text';
+                            reviewInput.placeholder = 'Add a review';
+                            reviewSection.appendChild(reviewInput);
+
+                            const submitReviewButton = document.createElement('button');
+                            submitReviewButton.textContent = 'Submit Review';
+                            submitReviewButton.addEventListener('click', () => {
+                                addReview(recipe.name, reviewInput.value);
+                                const reviewItem = document.createElement('li');
+                                reviewItem.textContent = reviewInput.value;
+                                reviewList.appendChild(reviewItem);
+                                reviewInput.value = '';
+                            });
+                            reviewSection.appendChild(submitReviewButton);
+
+                            recipeDiv.appendChild(reviewSection);
+
+                            recipesContainer.appendChild(recipeDiv);
+                        });
+                    } else {
+                        recipesContainer.textContent = 'No recipes match the selected ingredients.';
+                        recipesContainer.style.color = 'aqua';
+                    }
+                } else {
+                    recipesContainer.textContent = 'No recipes found.';
+                    recipesContainer.style.color = 'aqua';
+                }
+            }
+
+            function showSavedRecipes() {
+                const recipesContainer = document.getElementById('recipes');
+                recipesContainer.innerHTML = '';
+
+                const storedRecipes = JSON.parse(localStorage.getItem('recipes'));
+                const favoriteRecipes = JSON.parse(localStorage.getItem('favorites')) || [];
+
+                if (storedRecipes) {
+                    const savedRecipes = storedRecipes.filter(recipe => favoriteRecipes.includes(recipe.name));
+
+                    if (savedRecipes.length > 0) {
+                        savedRecipes.forEach(recipe => {
+                            const recipeDiv = document.createElement('div');
+                            recipeDiv.classList.add('recipe');
+
+                            const recipeName = document.createElement('h3');
+                            recipeName.textContent = recipe.name;
+                            recipeDiv.appendChild(recipeName);
+
+                            const recipeImage = document.createElement('img');
+                            recipeImage.src = recipe.image;
+                            recipeDiv.appendChild(recipeImage);
+
+                            const recipeIngredients = document.createElement('p');
+                            recipeIngredients.textContent = 'Ingredients: ' + recipe.ingredients.join(', ');
+                            recipeDiv.appendChild(recipeIngredients);
+
+                            const recipeInstructions = document.createElement('p');
+                            recipeInstructions.textContent = 'Instructions: ' + recipe.instructions;
+                            recipeDiv.appendChild(recipeInstructions);
+
+                            // Adding Unfavorite button
+                            const unfavoriteButton = document.createElement('button');
+                            unfavoriteButton.textContent = 'Unfavorite';
+                            unfavoriteButton.addEventListener('click', () => {
+                                FavRecipe(recipe.name);
+                                showSavedRecipes();
+                            });
+                            recipeDiv.appendChild(unfavoriteButton);
+
+                            recipesContainer.appendChild(recipeDiv);
+                        });
+                    } else {
+                        recipesContainer.textContent = 'No saved recipes found.';
+                    }
+                } else {
+                    recipesContainer.textContent = 'No recipes found.';
+                }
+            }
+
+            function FavRecipe(recipeName) {
+                let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                if (favorites.includes(recipeName)) {
+                    favorites = favorites.filter(favorite => favorite !== recipeName);
+                } else {
+                    favorites.push(recipeName);
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+            }
+
+            function addReview(recipeName, review) {
+                let reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+                if (!reviews[recipeName]) {
+                    reviews[recipeName] = [];
+                }
+                reviews[recipeName].push(review);
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+            }
+
+            function speakInstructions(instructions) {
+                const speech = new SpeechSynthesisUtterance(instructions);
+                speechSynthesis.speak(speech);
+            }
+
+            const loginButton = document.getElementById('login button');
+            const registerButton = document.getElementById('register button');
+            const showRegister = document.getElementById('show register');
+            const showLogin = document.getElementById('show login');
+
+            showRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            });
+
+            showLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+            });
+
+            registerButton.addEventListener('click', () => {
+                const username = document.getElementById('register-username').value;
+                const password = document.getElementById('register-password').value;
+
+                if (username && password) {
+                    const users = JSON.parse(localStorage.getItem('users')) || {};
+                    if (!users[username]) {
+                        users[username] = password;
+                        localStorage.setItem('users', JSON.stringify(users));
+                        alert('Registration successful! Please log in.');
+                        registerForm.classList.add('hidden');
+                        loginForm.classList.remove('hidden');
+                    } else {
+                        alert('Username already exists. Please choose a different username.');
+                    }
+                } else {
+                    alert('Please fill in both fields.');
+                }
+            });
+
+            loginButton.addEventListener('click', () => {
+                const username = document.getElementById('login-username').value;
+                const password = document.getElementById('login-password').value;
+
+                if (username && password) {
+                    const users = JSON.parse(localStorage.getItem('users')) || {};
+                    if (users[username] && users[username] === password) {
+                        alert('Login successful!');
+                        authContainer.classList.add('hidden');
+                        document.getElementById('ingredient-list').classList.remove('hidden');
+                    } else {
+                        alert('Invalid username or password.');
+                    }
+                } else {
+                    alert('Please fill in both fields.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
